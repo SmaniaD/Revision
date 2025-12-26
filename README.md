@@ -76,10 +76,11 @@ When `norevisionnotes=true`, all revision notes are hidden and the document comp
 
 **Revision mode (`norevisionnotes=false`):**
 
-![Revision mode example](final.png)
 
 **Final mode (`norevisionnotes=true`):**
 All revision notes and markers are automatically removed from the compiled document.
+
+<img src="final.png" alt="Revision mode example" width="400">
 
 
 
