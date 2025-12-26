@@ -68,7 +68,18 @@ When `norevisionnotes=false`, the document includes:
 - Color-coded margin or inline comments
 - Complete list of all revisions
 
+
+
 When `norevisionnotes=true`, all revision notes are hidden and the document compiles as a clean final version.
+
+## Examples
+
+**Revision mode (`norevisionnotes=false`):**
+
+![Revision mode example](final.png)
+
+**Final mode (`norevisionnotes=true`):**
+All revision notes and markers are automatically removed from the compiled document.
 
 
 
