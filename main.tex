@@ -1,0 +1,164 @@
+\documentclass[12pt]{amsart}
+\usepackage[colorinlistoftodos, textwidth=3.3cm]{todonotes}
+\usepackage{etoolbox}
+\usepackage[colorlinks]{hyperref}
+\newbool{norevisionnotes}
+\setbool{norevisionnotes}{false} 
+
+
+ \ifbool{norevisionnotes}
+    {
+    \newcommand{\change}[2][blue]{}
+     \newcommand{\changei}[2][blue]{}
+     }
+     {
+     
+\textwidth=12. true cm
+\textheight=24. true cm
+\voffset=-2. true cm
+\hoffset = 0.5 true cm
+
+
+
+\newcounter{change}
+\newcommand{\ballnum}[2]{%
+  \tikz[baseline=(char.base)]\node[shape=circle,draw,fill=#1,text=white,inner sep=0.8pt,scale=0.7] (char) {\scriptsize\textbf{#2}};%
+}     
+\newcommand{\change}[2][blue]{%
+  \refstepcounter{change} 
+  {\color{#1}$\overset{\thechange{}}{\bullet}$}\ %
+  \todo[
+    linecolor=#1,
+    backgroundcolor=#1!25,
+    bordercolor=#1,
+    size=tiny
+  ]{\fontfamily{phv}\selectfont    Revision \thechange{}.  \   #2}%
+}
+
+
+\newcommand{\changei}[2][blue]{%
+  \refstepcounter{change}%
+  {\color{#1}$\overset{\thechange{}}{\bullet}$}\ 
+  \todo[
+    inline,
+    linecolor=#1,
+    backgroundcolor=#1!25,
+    bordercolor=#1,
+    size=tiny
+  ]{\fontfamily{phv}\selectfont   Revision \thechange{}. \   #2}%
+}
+}
+
+\makeatletter
+\providecommand\@dotsep{5}
+\renewcommand{\listoftodos}[1][\@todonotes@todolistname]{%
+ \ifbool{norevisionnotes}
+    {}
+    {
+    {\@starttoc{tdo}{#1}}
+    }
+    }
+\makeatother
+
+
+
+
+
+
+
+\begin{document}
+
+\ifbool{norevisionnotes}
+ {}
+{
+Dear Editors and Referee,\\
+
+I would like to sincerely thank the referee for their careful reading of the manuscript and for the many insightful corrections and suggestions. We have addressed all questions, comments, and corrections, as described in the revised version of the manuscript attached. Descriptions of all modifications are indicated either in the margins or inserted directly in the text.
+
+\changei{Violet comments refer to modifications directly linked to the referee 1 remarks.}
+
+\changei[orange]{Orange  comments refer to modifications directly linked to the referee e remarks.}
+
+\changei[yellow]{Yellow comments refer either to the correction of additional typos or to changes motivated (but not directly prompted) by the referees's comments.}
+
+
+Best regards,\\
+
+ The authors
+\newpage
+\listoftodos[LIST OF REVISIONS]
+\newpage
+}
+
+
+\title{Blabla}
+
+\author{balbla}
+
+
+
+\address{balbla}
+
+%%
+%% If there are three of more authors they are added in the obvious
+%% way. 
+%%
+
+%%%
+%%% The following is for the abstract.  The abstract is optional and
+%%% if not used just delete, or comment out, the following.
+%%%
+
+\begin{abstract} 
+balbla
+\end{abstract}
+
+
+
+ \maketitle
+
+
+\section{Introduction} 
+
+The paper \change{This is a comment in a margin} walks sideways through the idea, chewing symbols without swallowing meaning.
+\change{This is a comment in a margin} Therefore the lemma sleeps under the table, dreaming of constants that never converge.
+\change[yellow]{This is a comment in a margin}
+Proof maybe, proof later, proof forgotten.\change{This is a comment in a margin}
+\change{This is a comment in a margin} One assumes $x$, then forgets why, then divides by coffee.
+Equations stare back, unimpressed.
+\changei[yellow]{This is an inline comment} 
+The theorem clears its throat but says nothing.
+\change{This is a comment in a margin}Meanwhile the footnote escapes, waving at a diagram that was never drawn.\change[green]{This is a comment in a margin}
+
+\[
+x = x + \varepsilon - \varepsilon \quad \text{for no particular reason.}
+\]
+
+\change{This is a comment in a margin} Hence, by an argument left to the reader and abandoned by the author,
+we conclude that everything is almost true, except when it is not.
+
+ Probably.
+
+\newpage 
+
+The paper \change{This is a comment in a margin} walks sideways through the idea, chewing symbols without swallowing meaning.
+\change{This is a comment in a margin} Therefore the lemma sleeps under the table, dreaming of constants that never converge.
+\change[yellow]{This is a comment in a margin}
+Proof maybe, proof later, proof forgotten.\change{This is a comment in a margin}
+\change{This is a comment in a margin} One assumes $x$, then forgets why, then divides by coffee.
+Equations stare back, unimpressed.
+\changei[yellow]{This is an inline comment} 
+The theorem clears its throat but says nothing.
+\change{This is a comment in a margin}Meanwhile the footnote escapes, waving at a diagram that was never drawn.\change[green]{This is a comment in a margin}
+
+\[
+x = x + \varepsilon - \varepsilon \quad \text{for no particular reason.}
+\]
+
+\change{This is a comment in a margin} Hence, by an argument left to the reader and abandoned by the author,
+we conclude that everything is almost true, except when it is not.
+
+ Probably.
+
+
+\end{document}
