@@ -1,164 +1,259 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  EXAMPLE: Revision comments for a paper (margin + inline notes)
+%  This file illustrates how to manage referee revisions using
+%  etoolbox booleans + todonotes.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \documentclass[12pt]{amsart}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  PACKAGES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% todonotes: provides margin notes and inline notes
+% - colorinlistoftodos: color-coded list of revisions
+% - textwidth: space reserved in the margin for notes
 \usepackage[colorinlistoftodos, textwidth=3.3cm]{todonotes}
+
+% etoolbox: provides booleans and \ifbool
 \usepackage{etoolbox}
+
+% hyperref: clickable links (harmless for revisions)
 \usepackage[colorlinks]{hyperref}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  GLOBAL SWITCH FOR REVISION NOTES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% If norevisionnotes = true:
+%   - all revision comments are disabled
+%   - document compiles as a clean final version
+%
+% If norevisionnotes = false:
+%   - margin and inline comments are shown
+%   - list of revisions is generated
 \newbool{norevisionnotes}
 \setbool{norevisionnotes}{false} 
 
 
- \ifbool{norevisionnotes}
-    {
-    \newcommand{\change}[2][blue]{}
-     \newcommand{\changei}[2][blue]{}
-     }
-     {
-     
-\textwidth=12. true cm
-\textheight=24. true cm
-\voffset=-2. true cm
-\hoffset = 0.5 true cm
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  DEFINITIONS DEPENDING ON THE SWITCH
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\ifbool{norevisionnotes}
+{
+  % --------------------------------------------------
+  % FINAL VERSION (no revision notes)
+  % --------------------------------------------------
+  % Redefine comment commands to do nothing
+  \newcommand{\change}[2][blue]{}
+  \newcommand{\changei}[2][blue]{}
+}
+{
+  % --------------------------------------------------
+  % REVISION VERSION (notes enabled)
+  % --------------------------------------------------
 
+  % Page layout adjustments to make room for margin notes
+  \textwidth=12. true cm
+  \textheight=24. true cm
+  \voffset=-2. true cm
+  \hoffset = 0.5 true cm
 
-\newcounter{change}
-\newcommand{\ballnum}[2]{%
-  \tikz[baseline=(char.base)]\node[shape=circle,draw,fill=#1,text=white,inner sep=0.8pt,scale=0.7] (char) {\scriptsize\textbf{#2}};%
-}     
-\newcommand{\change}[2][blue]{%
-  \refstepcounter{change} 
-  {\color{#1}$\overset{\thechange{}}{\bullet}$}\ %
-  \todo[
-    linecolor=#1,
-    backgroundcolor=#1!25,
-    bordercolor=#1,
-    size=tiny
-  ]{\fontfamily{phv}\selectfont    Revision \thechange{}.  \   #2}%
+  % Counter to number revisions globally
+  \newcounter{change}
+  
+
+  % --------------------------------------------------
+  % \change : margin revision note
+  %
+  % Usage:
+  %   \change{comment text}
+  %   \change[color]{comment text}
+  % --------------------------------------------------
+  \newcommand{\change}[2][blue]{%
+    \refstepcounter{change} 
+    {\color{#1}$\overset{\thechange{}}{\bullet}$}\ %
+    \todo[
+      linecolor=#1,
+      backgroundcolor=#1!25,
+      bordercolor=#1,
+      size=tiny
+    ]{%
+      \fontfamily{phv}\selectfont
+      Revision \thechange{}. \ #2
+    }%
+  }
+
+  % --------------------------------------------------
+  % \changei : inline revision note
+  %
+  % Usage:
+  %   \changei{comment text}
+  %   \changei[color]{comment text}
+  % --------------------------------------------------
+  \newcommand{\changei}[2][blue]{%
+    \refstepcounter{change}%
+    {\color{#1}$\overset{\thechange{}}{\bullet}$}\ 
+    \todo[
+      inline,
+      linecolor=#1,
+      backgroundcolor=#1!25,
+      bordercolor=#1,
+      size=tiny
+    ]{%
+      \fontfamily{phv}\selectfont
+      Revision \thechange{}. \ #2
+    }%
+  }
 }
 
-
-\newcommand{\changei}[2][blue]{%
-  \refstepcounter{change}%
-  {\color{#1}$\overset{\thechange{}}{\bullet}$}\ 
-  \todo[
-    inline,
-    linecolor=#1,
-    backgroundcolor=#1!25,
-    bordercolor=#1,
-    size=tiny
-  ]{\fontfamily{phv}\selectfont   Revision \thechange{}. \   #2}%
-}
-}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  LIST OF REVISIONS (List of todos)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \makeatletter
 \providecommand\@dotsep{5}
+
+% Print the list of revisions only if notes are enabled
 \renewcommand{\listoftodos}[1][\@todonotes@todolistname]{%
- \ifbool{norevisionnotes}
+  \ifbool{norevisionnotes}
     {}
-    {
-    {\@starttoc{tdo}{#1}}
-    }
-    }
+    {{\@starttoc{tdo}{#1}}}
+}
 \makeatother
 
 
-
-
-
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  DOCUMENT
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  COVER LETTER / RESPONSE TO REFEREES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \ifbool{norevisionnotes}
- {}
+{}
 {
 Dear Editors and Referee,\\
 
-I would like to sincerely thank the referee for their careful reading of the manuscript and for the many insightful corrections and suggestions. We have addressed all questions, comments, and corrections, as described in the revised version of the manuscript attached. Descriptions of all modifications are indicated either in the margins or inserted directly in the text.
+I would like to sincerely thank the referee for their careful reading of the
+manuscript and for the many insightful corrections and suggestions. We have
+addressed all questions, comments, and corrections, as described in the revised
+version of the manuscript attached. Descriptions of all modifications are
+indicated either in the margins or inserted directly in the text.
 
+% Color legend for revision notes
 \changei{Violet comments refer to modifications directly linked to the referee 1 remarks.}
 
-\changei[orange]{Orange  comments refer to modifications directly linked to the referee e remarks.}
+\changei[orange]{Orange comments refer to modifications directly linked to the referee 2 remarks.}
 
-\changei[yellow]{Yellow comments refer either to the correction of additional typos or to changes motivated (but not directly prompted) by the referees's comments.}
-
+\changei[yellow]{Yellow comments refer either to the correction of additional typos or to changes motivated (but not directly prompted) by the referees' comments.}
 
 Best regards,\\
+The authors
 
- The authors
+% List of all revision notes
 \newpage
 \listoftodos[LIST OF REVISIONS]
 \newpage
 }
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  METADATA
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \title{Blabla}
-
 \author{balbla}
-
-
-
 \address{balbla}
 
-%%
-%% If there are three of more authors they are added in the obvious
-%% way. 
-%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  ABSTRACT
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%%
-%%% The following is for the abstract.  The abstract is optional and
-%%% if not used just delete, or comment out, the following.
-%%%
-
-\begin{abstract} 
+\begin{abstract}
 balbla
 \end{abstract}
 
+\maketitle
 
 
- \maketitle
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  MAIN TEXT WITH REVISION NOTES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Introduction} 
 
-The paper \change{This is a comment in a margin} walks sideways through the idea, chewing symbols without swallowing meaning.
-\change{This is a comment in a margin} Therefore the lemma sleeps under the table, dreaming of constants that never converge.
+The paper \change{This is a comment in a margin}
+walks sideways through the idea, chewing symbols without swallowing meaning.
+
+\change{This is a comment in a margin}
+Therefore the lemma sleeps under the table, dreaming of constants that never converge.
+
 \change[yellow]{This is a comment in a margin}
 Proof maybe, proof later, proof forgotten.\change{This is a comment in a margin}
-\change{This is a comment in a margin} One assumes $x$, then forgets why, then divides by coffee.
+
+\change{This is a comment in a margin}
+One assumes $x$, then forgets why, then divides by coffee.
+
 Equations stare back, unimpressed.
-\changei[yellow]{This is an inline comment} 
+
+\changei[yellow]{This is an inline comment}
+
 The theorem clears its throat but says nothing.
-\change{This is a comment in a margin}Meanwhile the footnote escapes, waving at a diagram that was never drawn.\change[green]{This is a comment in a margin}
+
+\change{This is a comment in a margin}
+Meanwhile the footnote escapes, waving at a diagram that was never drawn.
+\change[green]{This is a comment in a margin}
 
 \[
 x = x + \varepsilon - \varepsilon \quad \text{for no particular reason.}
 \]
 
-\change{This is a comment in a margin} Hence, by an argument left to the reader and abandoned by the author,
+\change{This is a comment in a margin}
+Hence, by an argument left to the reader and abandoned by the author,
 we conclude that everything is almost true, except when it is not.
 
- Probably.
+Probably.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  SECOND PAGE (repetition just for illustration)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newpage 
 
-The paper \change{This is a comment in a margin} walks sideways through the idea, chewing symbols without swallowing meaning.
-\change{This is a comment in a margin} Therefore the lemma sleeps under the table, dreaming of constants that never converge.
+The paper \change{This is a comment in a margin}
+walks sideways through the idea, chewing symbols without swallowing meaning.
+
+\change{This is a comment in a margin}
+Therefore the lemma sleeps under the table, dreaming of constants that never converge.
+
 \change[yellow]{This is a comment in a margin}
 Proof maybe, proof later, proof forgotten.\change{This is a comment in a margin}
-\change{This is a comment in a margin} One assumes $x$, then forgets why, then divides by coffee.
+
+\change{This is a comment in a margin}
+One assumes $x$, then forgets why, then divides by coffee.
+
 Equations stare back, unimpressed.
-\changei[yellow]{This is an inline comment} 
+
+\changei[yellow]{This is an inline comment}
+
 The theorem clears its throat but says nothing.
-\change{This is a comment in a margin}Meanwhile the footnote escapes, waving at a diagram that was never drawn.\change[green]{This is a comment in a margin}
+
+\change{This is a comment in a margin}
+Meanwhile the footnote escapes, waving at a diagram that was never drawn.
+\change[green]{This is a comment in a margin}
 
 \[
 x = x + \varepsilon - \varepsilon \quad \text{for no particular reason.}
 \]
 
-\change{This is a comment in a margin} Hence, by an argument left to the reader and abandoned by the author,
+\change{This is a comment in a margin}
+Hence, by an argument left to the reader and abandoned by the author,
 we conclude that everything is almost true, except when it is not.
 
- Probably.
-
+Probably.
 
 \end{document}
