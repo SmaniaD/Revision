@@ -1,9 +1,13 @@
 # Revision
 
 A LaTeX template for managing paper revisions with margin and inline notes using `todonotes` and `etoolbox`.
-As the package changes it uses the package  todonotes. It is somehow more invasive, including the numeration 
-of the revision above a bullet mark in the precise position where the revision was done. This is convenient 
-when there are many revisions at a given page.
+It is similar to   the package [changes](https://ctan.org/pkg/changes?lang=en), but it is somehow more invasive, 
+including the numeration of the revision above a bullet mark in the precise position where the revision was done.
+This is convenient when there are many revisions at a given page. 
+
+The template also include a "letter to the referees" and generate a list of changes (with hyperlinks). 
+
+I mostly use this template to send a  revised version to journals. 
 
 ## Features
 
